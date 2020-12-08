@@ -1,3 +1,5 @@
+#reads in thermal json data, processes the 35 arrays, and outputs either .csv or .ply file
+
 import json
 import numpy as np
 import matplotlib
