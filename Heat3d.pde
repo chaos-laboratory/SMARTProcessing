@@ -1,3 +1,5 @@
+//displays thermal data from a .csv file
+
 Table data;
 int angleY = 0;
 int angleZ = 0;
