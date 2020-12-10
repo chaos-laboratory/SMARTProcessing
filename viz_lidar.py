@@ -2,6 +2,9 @@ from py4design import py3dmodel
 import time
 import numpy as np
 import json
+import sys
+import matplotlib
+from matplotlib import cm
 
 #color range and lower value
 low = 15
@@ -10,13 +13,13 @@ rg = 15
 #Flip Melexis coordinates?
 flip = False
 
-res_path = './Documents/Python/CHAOS/res.pts'
-data_path = './Documents/Python/CHAOS/Data Files/SMARTL00.TXT'
+data_path = sys.argv[1]
+res_path = sys.argv[2]
 #========================================================================================================
 #FUNCTIONS
 #========================================================================================================
-def merge_lidar_temp(data, temp_dlist, bbox_list, res_path, origin = (0,0,0),
-                     x_axis = (1,0,0), y_axis = (0,1,0), z_axis = (0,0,1)):
+def merge_lidar_temp(data, temp_dlist, bbox_list, res_path, temps, origin = (0,0,0),
+                     x_axis = (1,0,0), y_axis = (0,1,0), z_axis = (0,0,1),):
     
     nml_edges = []
     nml_pts = []
@@ -51,6 +54,16 @@ def merge_lidar_temp(data, temp_dlist, bbox_list, res_path, origin = (0,0,0),
     npts = len(nml_pts)
     interv = int(npts/ninterv)
     xyz_str = ''
+
+    #color scheme based on stddev or min/max
+    maxval = max(temps)
+    minval = min(temps)
+    std = np.std(temps)
+    mean = np.mean(temps)
+    #comment accordingly if you want to use straight min/max or stddev
+    #norm = matplotlib.colors.Normalize(vmin = minval, vmax = maxval)
+    norm = matplotlib.colors.Normalize(vmin = mean-std, vmax = mean+std)
+    colors = cm.ScalarMappable(norm = norm, cmap = 'inferno')
     
     #the number of points is too many to process it all at one go
     for i in range(ninterv):
@@ -103,18 +116,10 @@ def merge_lidar_temp(data, temp_dlist, bbox_list, res_path, origin = (0,0,0),
 ##            b = int(fc[2]*255)
 
             #Choose the color of the point
-            if temp >= low+rg/2:
-                r = 255
-                b = (int) (255 - 255 * (temp - (low+rg/2)) / (rg/2))
-            else:
-                b = 255
-                r = (int) (255 * (temp - low) / (rg/2))
-          
-            if r < 0: r = 0
-            if r > 255: r = 255
-            if b < 0: b = 0
-            if b > 255: b = 255
-            g = 0
+            rgbs = colors.to_rgba(temp)
+            r = int(rgbs[0]*256)
+            g = int(rgbs[1]*256)
+            b = int(rgbs[2]*256)
 
 ##            d = np.sqrt(x**2+y**2+z**2)
 ##            th = np.arctan2(y,x)
@@ -196,7 +201,7 @@ def temp_sphere2pts(temp_path, origin = (0,0,0), x_axis = (1,0,0),
     
     mx_temp = max(temps)
     mn_temp = min(temps)
-    
+
     falsecolours = py3dmodel.utility.falsecolour(temps, mn_temp, mx_temp, inverse = False)
     for cnt,d in enumerate(dlist):
         d['falsecolour'] = falsecolours[cnt]
@@ -283,7 +288,7 @@ tvs = py3dmodel.construct.make_occvertex_list(temp_pts)
 # py3dmodel.utility.visualise_falsecolour_topo(tvs, temps)
 
 #merge the two dataset, 
-merge_lidar_temp(data, dlist, bbox_list, res_path)
+merge_lidar_temp(data, dlist, bbox_list, res_path, temps)
 time2 = time.perf_counter()
 time_taken = time2-time1
 time_str = secs2hrsmins_str(time_taken)
