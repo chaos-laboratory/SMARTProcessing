@@ -1,3 +1,4 @@
+# Script to fix EEPFL data with old (incorrect) JSON output
 import sys
 
 filename = sys.argv[1]
