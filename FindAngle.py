@@ -4,10 +4,11 @@ import json
 import numpy as np
 import matplotlib
 from matplotlib import cm
+import sys
 
 #if res is ply or csv, change comments below accordingly
-path='/Users/alexkim/Documents/Python/CHAOS/Data Files/MediumSMART.TXT'
-res = '/Users/alexkim/Documents/Python/CHAOS/therm.ply'
+path = sys.argv[1]
+res = sys.argv[2]
 
 with open(path) as file:
     data = json.load(file)
