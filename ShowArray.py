@@ -6,6 +6,7 @@ import matplotlib
 from matplotlib import cm
 import sys
 import turtle
+import cmocean
 
 rows = int(sys.argv[1])
 cols = int(sys.argv[2])
@@ -21,7 +22,7 @@ mean = np.mean(temps)
 #comment norm accordingly if you want to use straight min/max or stddev
 #norm = matplotlib.colors.Normalize(vmin = minval, vmax = maxval)
 norm = matplotlib.colors.Normalize(vmin = mean-std, vmax = mean+std)
-colors = cm.ScalarMappable(norm = norm, cmap = 'inferno')
+colors = cm.ScalarMappable(norm = norm, cmap = 'cmo.thermal')
 
 #set up graphics
 turtle.screensize(320,240)
