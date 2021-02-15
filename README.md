@@ -6,6 +6,15 @@ Most scripts were intended for standalone use depending on the desired output
 
 ### *Melexis Processing*
 
+### FindAngleMelexis.py
+*Overview* - Transforms raw Melexis data by reading 35 individual frames and mapping each pixel to a direction
+
+*Input* - a file containing JSON data for the 35 individual temperature arrays and their directions
+
+*Output* - a .csv or .ply file containing each pixel and its associated direction in either spherical or cartesian coordinates
+
+*Useage notes* - Some commenting/uncommenting is necessary depending on desired output in 3 areas: Spherical vs cartesian output (line 48), temperature colormap norm (line 67), and output file type (line 61)
+
 ### fix.py
 *Overview* - Fixes incorrectly formatted JSON data coming from EEPFL SMaRT sensor running outdated code
 
@@ -23,6 +32,15 @@ Most scripts were intended for standalone use depending on the desired output
 *Useage notes* - Comment around line 63 depending on the desired style of normalization for the colormap. Adjust flip variable (line 14) depending on how Melexis is mounted in comparison to LIDAR (flip if mounted in opposite directions)
 
 ### *GridEye Processing*
+
+### FindAngleMelexis.py
+*Overview* - Transforms raw GridEye data by reading 21 individual frames and mapping each pixel to a direction
+
+*Input* - a file containing JSON data for the 21 individual temperature arrays and their directions
+
+*Output* - a .csv or .ply file containing each pixel and its associated direction in either spherical or cartesian coordinates
+
+*Useage notes* - Some commenting/uncommenting is necessary depending on desired output in 3 areas: Spherical vs cartesian output (line 49), temperature colormap norm (line 69), and output file type (line 63). Also, adjust boolean mirror value depending on orientation of GridEye
 
 ### ShowThermalGridEye.py 
 *Overview* - Displays a layout of all 21 frames from a Grid-EYE scan 
@@ -43,15 +61,6 @@ Most scripts were intended for standalone use depending on the desired output
 *Useage notes* - Comment around line 104 depending on the desired style of normalization for the colormap. Adjust rect variable (line 11) depending on whether estimated rectangular pixel mapping is desired. Adjust mirrored variable (line 14) depending on orientation of Grid-EYE (note: script was written for an upside-down sensor and will not currently function with a correctly oriented one)
 
 ### *Files for Processing either GridEye or Melexis*
-
-### FindAngle.py
-*Overview* - Transforms raw Melexis data by reading 35 individual frames and mapping each pixel to a direction
-
-*Input* - a file containing JSON data for the 35 individual temperature arrays and their directions
-
-*Output* - a .csv or .ply file containing each pixel and its associated direction in either spherical or cartesian coordinates
-
-*Useage notes* - Some commenting/uncommenting is necessary depending on desired output in 3 areas: Spherical vs cartesian output (line 48), temperature colormap norm (line 67), and output file type (line 61)
 
 ### Heat3d.pde
 *Overview* - Displays thermal data from a .csv file 
